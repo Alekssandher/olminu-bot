@@ -96,13 +96,12 @@ luvit scripts/registerGuildCommand.lua <command name in accord to file names in 
 # To register global command
 luvit scripts/registerGlobalCommands.lua <command name in accord to file names in ./commands/>
 ```
+> Note: Global command registration might take up to an hour to propagate across all servers. Guild commands are updated instantly.
 ## Seeing local/registred commands
 To see the commands already registred and the local commands use this script:
 ```bash
 luvit scripts/getApplicationCommands.lua
 ```
-> Note: Global command registration might take up to an hour to propagate across all servers. Guild commands are updated instantly.
-
 ## Contribution
 If you want to contribute to the project, feel free to open an issue or submit a pull request. All contributions are welcome!
 
