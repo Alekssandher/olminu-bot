@@ -38,9 +38,9 @@ You can add Olminu to your Discord server by following this [link](https://disco
 
 ## Installation
 
-1. Clone this repository:
+1. Clone this repository with the submodules:
     ```bash
-    git clone https://github.com/Alekssandher/Olminu-Bot-Lua.git
+    git clone --recurse-submodules https://github.com/Alekssandher/Olminu-Bot-Lua.git
     ```
 2. Navigate to the project directory:
     ```bash
@@ -50,10 +50,6 @@ You can add Olminu to your Discord server by following this [link](https://disco
     ```bash
     lit install SinisterRectus/discordia
     ```
-4. Init the submodules
-   ```bash
-   git submodule update --init --recursive
-   ```
 
 ## Setting Up
 
