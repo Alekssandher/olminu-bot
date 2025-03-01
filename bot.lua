@@ -8,12 +8,16 @@ local token = loadEnd.get("TOKEN")
 
 local client = discordia.Client():useApplicationCommands()
 
+
+
 local fs = require("fs")
 local commandsDir = "commands"
 
+local files = fs.readdirSync(commandsDir)
+
 -- Function to load a command by name
 function loadCommand(scope)
-    local files = fs.readdirSync(commandsDir) -- List all files in the "commands" directory
+     -- List all files in the "commands" directory
     
     for _, file in ipairs(files) do
         if file:match("%.lua$") then  -- Check if the file is a Lua script
@@ -24,7 +28,7 @@ function loadCommand(scope)
                 local command = dofile(commandPath) -- Load the file as a module
                 
                 if command and command.name then
-                    print("Command loaded:", command.name)
+                    
                     return command -- Returns the specific command loaded
                 else
                     print("Error loading command:", file)
@@ -41,9 +45,13 @@ end
 local http = require("coro-http")
 local json = require('json')
 
+-- local e = discordia.enums.gatewayIntent
+
+-- client:enableIntents(e.guildMembers, e.guildPresences, e.messageContent, e.guilds)
+
+client:setIntents(33281)
 client:on("ready", function()
     print("Bot connected as " .. client.user.username)  
-    
     
 end)
 
@@ -54,14 +62,16 @@ client:on('slashCommand', function(interaction, command, args)
         interaction:reply("Command not found, remember to register the commands", true)
     end
     
-    local success, err = pcall(function()
-        cmd.execute(interaction, args, http, json)
-    end)
+    coroutine.wrap(function()
+        local success, err = pcall(function()
+            cmd.execute(interaction, args, http, json)
+        end)
 
-    if not success then
-        interaction:reply("An error occurred while executing the command: " .. command.name, true)
-        print("Error executing command:", err) 
-    end
+        if not success then
+            interaction:reply("An error occurred while executing the command: " .. command.name, true)
+            print("Error executing command:", err)
+        end
+    end)()
 end)
 
 client:run('Bot ' .. token)

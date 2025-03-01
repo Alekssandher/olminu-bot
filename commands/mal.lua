@@ -12,7 +12,7 @@ local function search(kind, term, http, json)
     local res, body = http.request("GET", url)
 
     if res.code ~= 200 then
-        print("Erro na requisição:", res.reason)
+        print("Request error:", res.reason)
         return
     end
     
