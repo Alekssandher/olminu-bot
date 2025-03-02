@@ -24,6 +24,7 @@ The bot is named after Olminu, a character from the manga *Drifters*. As a fan o
 - [Setting Up](#setting-up)
 - [Running the Project](#running-the-project)
 - [Registering Slash Commands](#registering-slash-commands)
+- [Seeing local/registred commands](#seeing-local/registred-commands)
 - [Contribution](#contribution)
 - [Terms of Use](#terms)
 - [License](#license)
@@ -74,7 +75,7 @@ Before registering a command you will need to have at least a command in the ./c
 ```lua
   return {
     name = "ping",
-    description = "Responde com Pong!",
+    description = "Replies with Pong!",
     execute = function(interaction)
         
         interaction:reply("🏓 Pong!", true)
