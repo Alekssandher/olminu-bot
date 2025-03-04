@@ -26,7 +26,6 @@ The bot is named after Olminu, a character from the manga *Drifters*. As a fan o
 - [Registering Slash Commands](#registering-slash-commands)
 - [Seeing local/registred commands](#seeing-local/registred-commands)
 - [Contribution](#contribution)
-- [Terms of Use](#terms)
 - [License](#license)
 
 ## Inviting Bot
@@ -101,9 +100,6 @@ luvit scripts/getApplicationCommands.lua
 ```
 ## Contribution
 If you want to contribute to the project, feel free to open an issue or submit a pull request. All contributions are welcome!
-
-## Terms
-Make sure to be a good guy and follow our [terms of use](TERMS.md) when using our bot in your Discord server.
 
 ## License
 This project is licensed under the GNU General Public License (GPL) version 3. You are free to use, modify, and distribute this software, provided that all copies and derivatives are also licensed under GPL v3.
