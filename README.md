@@ -76,7 +76,7 @@ Before registering a command you will need to have at least a command in the ./c
   return {
     name = "ping",
     description = "Replies with Pong!",
-    execute = function(interaction)
+    execute = function(interaction, args, http, json) 
         
         interaction:reply("🏓 Pong!", true)
     end
