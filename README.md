@@ -66,7 +66,7 @@ You can add Olminu to your Discord server by following this [link](https://disco
 Run the main file using the following command:
 
 ```bash
-luvit main.lua
+luvit bot.lua
 ```
 
 ## Registering Slash Commands
