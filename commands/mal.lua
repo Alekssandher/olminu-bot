@@ -3,7 +3,7 @@ local function search(kind, term, http, json)
     local encoded_term = term:gsub(" ", "%%20")
     local url
     if kind == "anime" then
-        url = string.format("https://api.jikan.moe/v4/anime?q=%s&limit=1", encoded_term)
+        url = string.format("https://api.jikan.moe/v4/anime?type=tv&q=%s&limit=1", encoded_term)
     elseif kind == "character" then
         url = string.format("https://api.jikan.moe/v4/characters?q=%s&limit=1", encoded_term)
     end
@@ -138,7 +138,7 @@ do return {
     options = {
         {
             name = "kind",
-            type = 3, 
+            type = 3,
             description = "Are you looking for an anime or a character?",
             required = true,
             choices = {

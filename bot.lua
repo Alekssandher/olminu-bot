@@ -16,7 +16,7 @@ local commandsDir = "commands"
 local files = fs.readdirSync(commandsDir)
 
 -- Function to load a command by name
-function loadCommand(scope)
+local function loadCommand(scope)
      -- List all files in the "commands" directory
     
     for _, file in ipairs(files) do
@@ -60,6 +60,7 @@ client:on('slashCommand', function(interaction, command, args)
 
     if(cmd == nil) then
         interaction:reply("Command not found, remember to register the commands", true)
+        return
     end
     
     coroutine.wrap(function()
