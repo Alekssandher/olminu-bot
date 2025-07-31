@@ -1,6 +1,6 @@
 return {
     name = "ping",
-    description = "Responde com Pong!",
+    description = "Replies with pong!",
     execute = function(interaction)
         
         interaction:reply("🏓 Pong!", true)
