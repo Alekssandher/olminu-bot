@@ -1,4 +1,12 @@
 
+local function extractDate(str)
+
+    if str == nil then
+        return "unknown"
+    end
+    return string.match(str, "^(%d%d%d%d%-%d%d%-%d%d)") 
+end
+
 local function search(kind, term, http, json)
     local encoded_term = term:gsub(" ", "%%20")
     local url
@@ -6,8 +14,9 @@ local function search(kind, term, http, json)
         url = string.format("https://api.jikan.moe/v4/anime?type=tv&q=%s&limit=1", encoded_term)
     elseif kind == "character" then
         url = string.format("https://api.jikan.moe/v4/characters?q=%s&limit=1", encoded_term)
+    elseif kind == "username" then
+        url = string.format("https://api.jikan.moe/v4/users/%s/full", encoded_term) 
     end
-    
 
     local res, body = http.request("GET", url)
 
@@ -18,12 +27,86 @@ local function search(kind, term, http, json)
     
     local data = json.decode(body)
 
-    if data and data.data and #data.data > 0 then
-        return data.data[1]
+    if data and data.data then
+
+        if type(data.data) == "table" and data.data[1] then
+            return data.data[1]
+        else
+            return data.data
+        end
     else
-        return nil;
+        return nil
     end
 
+end
+local function profileResponse(interaction, user)
+    local embed = {
+        title = user.username,
+        url = user.url,
+        thumbnail = {
+            url = user.images.jpg.image_url
+        },
+        fields = {
+            {
+                name = "Username",
+                value = user.username,
+                inline = true
+            },
+            {
+                name = "Gender",
+                value = user.gender or "unknown",
+                inline = true
+            },
+            {
+                name = "Birthday",
+                value = extractDate(user.birthday),
+                inline = true
+            },
+            {
+                name = "Location",
+                value = user.location or "unknown",
+                inline = true
+            },
+            {
+                name = "MalId",
+                value = user.mal_id,
+                inline = true
+            },
+            {
+                name = "Joined",
+                value = extractDate(user.joined),
+                inline = true
+            },
+            {
+                name = "Anime Stats",
+                value = string.format("Watched: %d\nCompleted: %d\nDays Watched: %d\nEpisodes: %d\nDropped: %d\nMean Score: %.2f",
+                    user.statistics.anime.count or 0,
+                    user.statistics.anime.completed or 0,
+                    user.statistics.anime.days_watched or 0,
+                    user.statistics.anime.episodes_watched or 0,
+                    user.statistics.anime.dropped or 0,
+                    user.statistics.anime.mean_score or 0),
+                inline = true
+            },
+            {
+                name = "Manga Stats",
+                value = string.format("Read: %d\nCompleted: %d\nDays Read: %d\nChapters: %d\nDropped: %d\nMean Score: %.2f",
+                    user.statistics.manga.count or 0,
+                    user.statistics.manga.completed or 0,
+                    user.statistics.manga.days_read or 0,
+                    user.statistics.manga.chapters_read or 0,
+                    user.statistics.manga.dropped or 0,
+                    user.statistics.manga.mean_score or 0),
+                inline = true
+            }
+        },
+        footer = {
+            text = string.format("%s - Information from MyAnimeList", interaction.user.username)
+        },
+        timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
+    }
+
+    interaction:reply({ embed = embed })
 end
 local function animeResponse(interaction, result)
 
@@ -132,6 +215,7 @@ local function characterResponse(interaction, char)
         interaction:reply("she looks like me, what a beautiful lady")
     end
 end
+
 do return {
     name = "mal",
     description = "Make a research on My Anime List",
@@ -143,12 +227,13 @@ do return {
             required = true,
             choices = {
                 {name = "Anime", value = "anime"},
-                {name = "Character", value = "character"}
+                {name = "Character", value = "character"},
+                {name = "User", value = "username"}
             }
         },
         {
             name = "terms",
-            description = "Type your anime/char name",
+            description = "Type your anime/char/user name",
             type = 3,
             required = true
         }
@@ -169,7 +254,9 @@ do return {
         elseif args.kind == "character" then
             characterResponse(interaction, result)
             return;
-        
+        elseif args.kind == "username" then
+            profileResponse(interaction, result)
+            return;
         end
         
         
