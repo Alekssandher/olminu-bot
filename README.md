@@ -24,6 +24,7 @@ The bot is named after Olminu, a character from the manga *Drifters*. As a fan o
 - [Setting Up](#setting-up)
 - [Running the Project](#running-the-project)
 - [Registering Slash Commands](#registering-slash-commands)
+- [Deleting Slash Commands](#deleting-slash-commands)
 - [Seeing local/registred commands](#seeing-local/registred-commands)
 - [Contribution](#contribution)
 - [License](#license)
@@ -93,6 +94,26 @@ luvit scripts/registerGuildCommand.lua <command name in accord to file names in 
 luvit scripts/registerGlobalCommands.lua <command name in accord to file names in ./commands/>
 ```
 > Note: Global command registration might take up to an hour to propagate across all servers. Guild commands are updated instantly.
+## Deleting Slash Commands
+If you need to remove registered commands, you can use the delete command script. This is useful when cleaning up old commands or removing test commands.
+
+```bash
+# To delete a guild command
+luvit scripts/deleteCommand.lua guild <command name>
+```
+```bash
+# To delete a global command
+luvit scripts/deleteCommand.lua global <command name>
+```
+
+The delete script will:
+1. Search for the command by name in the specified scope (guild or global)
+2. Display the command ID if found
+3. Delete the command from Discord's servers
+4. Confirm successful deletion
+
+> **Note**: Like registration, global command deletion might take some time to propagate across all servers, while guild command deletion is instant.
+
 ## Seeing local/registred commands
 To see the commands already registred and the local commands use this script:
 ```bash
