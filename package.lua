@@ -4,6 +4,8 @@ return {
     dependencies = {
       "SinisterRectus/discordia",
       "alekssandher/discordia-slash",
-      "Bilal2453/discordia-interactions"
+      "Bilal2453/discordia-interactions",
+      "luvit/sha1",
+      "luvit/secure-socket"
     }
   }
