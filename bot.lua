@@ -1,5 +1,6 @@
 local discordia = require('discordia')
 require("discordia-slash")
+require("discordia-components")
 
 local loadEnd = require("libs.env")
 loadEnd.load_dotenv(".env")
@@ -56,6 +57,7 @@ client:on("ready", function()
 end)
 
 client:on('slashCommand', function(interaction, command, args)
+
 	local cmd = loadCommand(command.name)
 
     if(cmd == nil) then
@@ -73,6 +75,41 @@ client:on('slashCommand', function(interaction, command, args)
             print("Error executing command:", err)
         end
     end)()
+end)
+
+client:on("interactionCreate", function(interaction)
+    if interaction.type == 3 and interaction.data.custom_id == "captcha_modal" then
+        -- Usuário clicou no botão para abrir o modal
+        interaction:Modal({
+            title = "Digite o captcha",
+            custom_id = "captcha_submit",
+            components = {
+                {
+                    type = 1,
+                    components = {
+                        {
+                            type = 4,
+                            custom_id = "captcha_input",
+                            label = "Captcha",
+                            style = 1,
+                            required = true,
+                            placeholder = "Digite os caracteres da imagem"
+                        }
+                    }
+                }
+            }
+        })
+    elseif interaction.type == 5 and interaction.data.custom_id == "captcha_submit" then
+        -- Usuário enviou o modal com o captcha
+        local captcha_value = interaction.data.components[1].components[1].value
+        interaction:reply({
+            content = "Você digitou: `" .. captcha_value .. "`",
+            ephemeral = true
+        })
+
+        -- Aqui você pode continuar o rastreamento usando captcha_value
+        -- Se quiser, chame função do seu comando ou faça requisição externa
+    end
 end)
 
 client:run('Bot ' .. token)

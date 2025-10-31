@@ -5,6 +5,8 @@ return {
       "SinisterRectus/discordia",
       "alekssandher/discordia-slash",
       "Bilal2453/discordia-interactions",
+      "Bilal2453/discordia-components",
+      "Bilal2453/discordia-modals",
       "luvit/sha1",
       "luvit/secure-socket"
     }
