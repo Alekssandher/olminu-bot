@@ -1,33 +1,36 @@
-#ifdef LUA
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
-#endif
-
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_write.h"
 
-int convert_image(const char *input_path, const char *output_path)
+#include "string.h"
+#include <stdlib.h>
+
+int convert_image(const char *input_path, const char *output_path, const char *format)
 {
-    return 1;
-    #ifdef LUA
-    const char *input_path = luaL_checkstring(L, 1);
-    const char *output_path = luaL_checkstring(L, 2);
-    const char *format = luaL_checkstring(L, 2);
-    #endif
-    
-    int x,y,n;
+    int x, y, n;
 
     unsigned char *data = stbi_load(input_path, &x, &y, &n, 0);
+    if (!data) {
+        return 0;
+    }
 
-    
-    int result = stbi_write_jpg(output_path,x, y, n, &data, 100);
+    int result = 0;
 
+    if (strcmp(format, "JPG") == 0 || strcmp(format, "jpg") == 0) {
+        result = stbi_write_jpg(output_path, x, y, n, data, 100);
+    }
+    else if (strcmp(format, "PNG") == 0 || strcmp(format, "png") == 0) {
+        result = stbi_write_png(output_path, x, y, n, data, x * n);
+    }
+    else if (strcmp(format, "BMP") == 0 || strcmp(format, "bmp") == 0) {
+        result = stbi_write_bmp(output_path, x, y, n, data);
+    }
+    else if (strcmp(format, "HDR") == 0 || strcmp(format, "hdr") == 0) {
+        result = stbi_write_hdr(output_path, x, y, n, (float*)data);
+    }
     stbi_image_free(data);
 
     return result;
-
 }

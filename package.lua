@@ -8,6 +8,8 @@ return {
       "Bilal2453/discordia-components",
       "Bilal2453/discordia-modals",
       "luvit/sha1",
-      "luvit/secure-socket"
+      "luvit/secure-socket",
+      "luvit/coro-http",
+      "luvit/fs"
     }
   }

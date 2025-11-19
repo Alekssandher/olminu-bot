@@ -45,6 +45,8 @@ end
 -- i don't know why but luvit can't load libs in the other files, so i found this "solution"
 local http = require("coro-http")
 local json = require('json')
+local fs = require('fs')
+
 
 -- local e = discordia.enums.gatewayIntent
 
@@ -67,7 +69,7 @@ client:on('slashCommand', function(interaction, command, args)
     
     coroutine.wrap(function()
         local success, err = pcall(function()
-            cmd.execute(interaction, args, http, json)
+            cmd.execute(interaction, args, http, json, fs)
         end)
 
         if not success then
@@ -79,7 +81,6 @@ end)
 
 client:on("interactionCreate", function(interaction)
     if interaction.type == 3 and interaction.data.custom_id == "captcha_modal" then
-        -- Usuário clicou no botão para abrir o modal
         interaction:Modal({
             title = "Digite o captcha",
             custom_id = "captcha_submit",
@@ -100,15 +101,13 @@ client:on("interactionCreate", function(interaction)
             }
         })
     elseif interaction.type == 5 and interaction.data.custom_id == "captcha_submit" then
-        -- Usuário enviou o modal com o captcha
         local captcha_value = interaction.data.components[1].components[1].value
         interaction:reply({
             content = "Você digitou: `" .. captcha_value .. "`",
             ephemeral = true
         })
 
-        -- Aqui você pode continuar o rastreamento usando captcha_value
-        -- Se quiser, chame função do seu comando ou faça requisição externa
+    
     end
 end)
 
